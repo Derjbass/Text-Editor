@@ -32,17 +32,20 @@ module.exports = () => {
 
       // manifest
       new WebpackPwaManifest({
+        fingerprints: false,
         inject: true,
         name: 'Just Another Text Editor',
         short_name: 'JATE',
         description: 'Takes notes with JavaScript syntax highlighting!',
         start_url:'/',
+        publicPath: '/',
         theme_color: '#225ca3',
         background_color: '#225ca3',
         icons: [
           {
             src: path.resolve('src/images/logo.png'),
             sizes: [96, 128, 192, 256, 384, 512],
+            destination: path.join('assets', 'icons')
 
           }
         ]
@@ -53,18 +56,22 @@ module.exports = () => {
     module: {
       rules: [
         {
-          use: ['style-loader', 'css-loader']
+          test: /\.css$/i,
+          use: ['style-loader', 'css-loader'],
         },
         {
+          test: /\.m?js$/,
+          exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/present-env'],
-              plugins: ['@babel/plugin-proposal-object-rest-spread', '@babel/transform-runtime']
-            }
-          }
-        }
+              presets: ['@babel/preset-env'],
+              plugins: ['@babel/plugin-proposal-object-rest-spread', '@babel/transform-runtime'],
+            },
+          },
+        },
       ],
     },
   };
 };
+
